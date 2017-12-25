@@ -6,6 +6,8 @@ DirectSoundTest is a project to test Microsoft.DirectX.dll and t Microsoft.Direc
 
 https://github.com/skylan0701/DirectsoundTest
 
+https://github.com/sharpbai/directsond_record
+
 http://blog.csdn.net/cuoban/article/details/50618851
 
 # Download zlibnet.dll 
