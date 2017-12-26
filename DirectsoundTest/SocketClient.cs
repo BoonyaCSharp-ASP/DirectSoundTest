@@ -5,7 +5,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-
+/// <summary>
+/// 参考:https://docs.microsoft.com/en-us/dotnet/framework/network-programming/socket-code-examples
+/// </summary>
 namespace DirectsoundTest
 {
     class SocketClient
