@@ -20,9 +20,11 @@ namespace FormRec
 
         private void button1_Click(object sender, EventArgs e)
         {
+            string fileName = "C://DEVELOPERS//rec.wav";
             recoder = new Recoder();
-            recoder.SetFileName("D://rec.wav");
+            recoder.SetFileName(fileName);
             recoder.RecStart();
+            label1.Text = "文件存储在:" + fileName;
         }
 
         private void button2_Click(object sender, EventArgs e)

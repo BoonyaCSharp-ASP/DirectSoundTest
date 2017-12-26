@@ -35,41 +35,45 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(68, 38);
+            this.button1.Location = new System.Drawing.Point(51, 30);
+            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(67, 21);
             this.button1.TabIndex = 0;
-            this.button1.Text = "开始录制";
+            this.button1.Text = "开始录音";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(68, 94);
+            this.button2.Location = new System.Drawing.Point(167, 30);
+            this.button2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.Size = new System.Drawing.Size(70, 21);
             this.button2.TabIndex = 1;
-            this.button2.Text = "结束录制";
+            this.button2.Text = "停止录制";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(29, 143);
+            this.label1.Location = new System.Drawing.Point(22, 114);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(162, 15);
+            this.label1.Size = new System.Drawing.Size(125, 12);
             this.label1.TabIndex = 2;
-            this.label1.Text = "文件存储在D:\\rec.wav";
+            this.label1.Text = "此处显示录音文件地址";
             // 
             // RecForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(282, 255);
+            this.ClientSize = new System.Drawing.Size(345, 204);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "RecForm";
             this.Text = "测试DirectSound录制";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.RecForm_FormClosed);
