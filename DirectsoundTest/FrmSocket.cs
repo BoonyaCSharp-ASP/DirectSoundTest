@@ -34,6 +34,23 @@ namespace DirectsoundTest
 
         }
 
+        // 委托设置值
+
+        delegate void setDataToListView(string data);
+        private void SetListViewData(string data)
+        {
+            if (this.listViewData.InvokeRequired)
+            {
+                setDataToListView stcb = new setDataToListView(SetListViewData);
+                this.Invoke(stcb, new object[] { data });
+            }
+            else
+            {
+                this.listViewData.Items.Add(data);
+
+            }
+        }
+
         /// <summary>
         /// 客户端发送socket连接数据
         /// </summary>
@@ -44,10 +61,9 @@ namespace DirectsoundTest
             // 发送UTF8文字
             byte[] buffer = Encoding.UTF8.GetBytes(this.textBox.Text.ToString());
             string data = Encoding.UTF8.GetString(buffer);
-            listViewData.Items.Add(data);
-
             Thread thread = new Thread(() => {
                 SocketClient.StartClient(data);
+                SetListViewData(data);//委托设置控件的值
             });
             thread.IsBackground = true;
             thread.Start();
