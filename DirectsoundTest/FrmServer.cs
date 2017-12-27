@@ -15,8 +15,6 @@ namespace DirectsoundTest
 {
     public partial class FrmServer : Form
     {
-        // Incoming data from the client.  
-        public static string data = null;
 
         public static Boolean isRuning = true;
 
@@ -54,25 +52,23 @@ namespace DirectsoundTest
                     Console.WriteLine("Waiting for a connection...");
                     // Program is suspended while waiting for an incoming connection.  
                     Socket handler = listener.Accept();
-                    data = null;
 
                     // An incoming connection needs to be processed.  
                     while (true && isRuning)
                     {
                         bytes = new byte[1024];
                         int bytesRec = handler.Receive(bytes);
-                        data += Encoding.UTF8.GetString(bytes, 0, bytesRec);
-                        if (data.IndexOf("<EOF>") > -1)
-                        {
-                            break;
+                        Console.Write("Received sound data:");
+                        foreach (byte b in bytes) {
+                            Console.Write(b);
                         }
                     }
 
                     // Show the data on the console.  
-                    Console.WriteLine("Text received : {0}", data);
+                   
 
                     // Echo the data back to the client.  
-                    byte[] msg = Encoding.UTF8.GetBytes(data);
+                    byte[] msg = Encoding.UTF8.GetBytes("回复客户端消息");
 
                     handler.Send(msg);
                     handler.Shutdown(SocketShutdown.Both);
