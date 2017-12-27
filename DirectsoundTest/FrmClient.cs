@@ -15,6 +15,9 @@ namespace DirectsoundTest
     public partial class FrmClient : Form
     {
         DirectSoundCapture directSoundCapture;
+
+        Socket socket;
+
         public FrmClient()
         {
             InitializeComponent();
@@ -30,9 +33,11 @@ namespace DirectsoundTest
             IPAddress ipAddress = ipHostInfo.AddressList[0];
             IPEndPoint remoteEP = new IPEndPoint(ipAddress, Setting.PORT);
             // Create a TCP/IP  socket.  
-            Socket socket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            socket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
             socket.Connect(remoteEP);// 与远端建立socket连接
+
+            directSoundCapture = new DirectSoundCapture();
 
             directSoundCapture.LocalSocket = socket;//客户端Socket实例对象
             directSoundCapture.RemoteEndPoint = remoteEP;//连接远程服务端点
@@ -46,16 +51,36 @@ namespace DirectsoundTest
         }
 
         /// <summary>
+        /// 关闭客户端录音
+        /// </summary>
+        private void closeSocket() {
+            // close sound capture
+            directSoundCapture.Stop();
+            directSoundCapture = null;
+
+            // Release the socket.  
+            byte[] msg = Encoding.UTF8.GetBytes("关闭连接" + "<EOF>");
+            socket.Send(msg);
+            socket.Shutdown(SocketShutdown.Both);
+            socket.Close();
+        }
+
+        /// <summary>
         /// 开始录音
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnStart_Click(object sender, EventArgs e)
         {
-            btnStart.Enabled = false;//不可重复点击
-            directSoundCapture = new DirectSoundCapture();
-
-            initSocket();// 初始化Socket
+            if ("开始录音".Equals(btnStart.Text.ToString()))
+            {
+                initSocket();// 初始化Socket
+                btnStart.Text = "停止录音";
+            }
+            else if ("停止录音".Equals(btnStart.Text.ToString())) {
+                closeSocket();//关闭Socket连接
+                btnStart.Text = "开始录音";
+            }
             
         }
 

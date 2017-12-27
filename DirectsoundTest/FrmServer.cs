@@ -43,7 +43,7 @@ namespace DirectsoundTest
             Console.WriteLine("服务端已开启Socket.....listening.");
 
 
-            //开启服务端处理客户端数据线程===去掉此处代码会导致音频短路
+            //开启服务端处理客户端数据线程===去掉此处代码会导致音频断路
             Thread thread = new Thread(() =>
             {
 
@@ -61,6 +61,15 @@ namespace DirectsoundTest
                         Console.Write("Received sound data:");
                         foreach (byte b in bytes) {
                             Console.Write(b);
+                        }
+
+                        // close current socket 
+                        string data = Encoding.UTF8.GetString(bytes, 0, bytesRec);
+                        if (data.IndexOf("<EOF>") > -1)
+                        {
+                            Console.WriteLine("\n");
+                            Console.WriteLine("Break a connection ....");
+                            break;
                         }
                     }
 
