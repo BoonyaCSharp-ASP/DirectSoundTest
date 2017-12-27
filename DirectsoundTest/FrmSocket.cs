@@ -53,5 +53,34 @@ namespace DirectsoundTest
             thread.Start();
 
         }
+
+        /// <summary>
+        /// 打开服务端
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void toolStripMenuItemServer_Click(object sender, EventArgs e)
+        {
+            if (!Setting.SERVER_BINDED)
+            {
+                FrmServer frmServer = new FrmServer();
+                frmServer.Show();
+                Setting.SERVER_BINDED = true;
+            }
+            else {
+                MessageBox.Show("服务端已注册");
+            }
+        }
+
+        /// <summary>
+        /// 打开客户端
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void toolStripMenuItemClient_Click(object sender, EventArgs e)
+        {
+            FrmClient frmClient = new FrmClient();
+            frmClient.Show();
+        }
     }
 }

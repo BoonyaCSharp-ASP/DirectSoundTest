@@ -114,6 +114,7 @@
       <DependentUpon>FrmSocket.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
+    <Compile Include="Setting.cs" />
     <Compile Include="SocketClient.cs" />
     <Compile Include="SocketServer.cs" />
     <Compile Include="DirectSound.cs" />
@@ -145,6 +146,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="FrmClient.resx">
+      <DependentUpon>FrmClient.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmServer.resx">
+      <DependentUpon>FrmServer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmSocket.resx">
       <DependentUpon>FrmSocket.cs</DependentUpon>
     </EmbeddedResource>

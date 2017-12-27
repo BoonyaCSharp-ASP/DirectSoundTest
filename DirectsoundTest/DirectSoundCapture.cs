@@ -25,80 +25,15 @@ namespace DirectsoundTest
         private Microsoft.DirectX.DirectSound.Capture capture;//捕捉设备对象    
         private Device PlayDev;//播放设备对象    
         private BufferDescription buffDiscript;
-        private Socket Client;
-        private EndPoint epServer;
+        private Socket Client;// 客户端Socket实例
+        private EndPoint epServer;// 客户端连接到远程端点
         private int iBufferOffset = 0;//捕捉缓冲区位移    
         private IntPtr intptr;//窗口句柄    
+        private int intPosWrite = 0;//内存流中写指针位移    
+        private int intPosPlay = 0;//内存流中播放指针位移    
+        private int intNotifySize = 5000;//设置通知大小   
 
-        public IntPtr Intptr
-        {
-            set
-            {
-                intptr = value;
-            }
-        }
-
-        public int NotifySize
-        {
-            set
-            {
-                iNotifySize = value;
-            }
-
-        }
-
-        public int NotifyNum
-        {
-            set
-            {
-                iNotifyNum = value;
-            }
-        }
-
-        public Socket LocalSocket
-        {
-            set
-            {
-                Client = value;
-            }
-        }
-
-        public EndPoint RemoteEndPoint
-        {
-            set
-            {
-                epServer = value;
-            }
-        }
-
-
-        /// <summary>    
-        /// 初始化相关操作    
-        /// </summary>    
-        public void InitVoice()
-        {//初始化声音相关设置：（1）捕捉缓冲区（2）播放缓冲区    
-            if (!CreateCaputerDevice())
-            {
-                throw new Exception();
-            }//建立设备对象    
-            CreateCaptureBuffer();//建立缓冲区对象    
-            CreateNotification();//设置通知及事件    
-            //======（2）==============    
-            if (!CreatePlayDevice())
-            {
-                throw new Exception();
-            }
-            CreateSecondaryBuffer();
-        }
-
-        /// <summary>    
-        /// 启动声音采集    
-        /// </summary>    
-        public void StartVoiceCapture()
-        {
-            capturebuffer.Start(true);//true表示设置缓冲区为循环方式，开始捕捉    
-        }
-
+        #region 私有方法
         /// <summary>    
         /// 创建用于播放的音频设备对象    
         /// </summary>    
@@ -232,20 +167,111 @@ namespace DirectsoundTest
             //capturedata = g729.Encode(capturedata);//语音编码    
             try
             {
+                Console.WriteLine(new DateTime() + "=====传送语音");
                 Client.SendTo(capturedata, epServer);//传送语音    
+                Console.WriteLine(new DateTime() + "=====播放语音");
+                GetVoiceData(capturedata.Length,capturedata);
             }
-            catch
+            catch(Exception ex)
             {
+                Console.WriteLine("发送语音异常:"+ex.Message);
                 throw new Exception();
             }
             iBufferOffset += capturedata.Length;
             iBufferOffset %= iBufferSize;//取模是因为缓冲区是循环的。    
+        } 
+
+        /// <summary>    
+        /// 设置音频格式，如采样率等    
+        /// </summary>    
+        /// <returns>设置完成后的格式</returns>    
+        private WaveFormat SetWaveFormat()
+        {
+            WaveFormat format = new WaveFormat();
+            format.FormatTag = WaveFormatTag.Pcm;//设置音频类型    
+            format.SamplesPerSecond = 11025;//采样率（单位：赫兹）典型值：11025、22050、44100Hz    
+            format.BitsPerSample = 16;//采样位数    
+            format.Channels = 1;//声道    
+            format.BlockAlign = (short)(format.Channels * (format.BitsPerSample / 8));//单位采样点的字节数    
+            format.AverageBytesPerSecond = format.BlockAlign * format.SamplesPerSecond;
+
+            return format;
+            //按照以上采样规格，可知采样1秒钟的字节数为22050*2=44100B 约为 43K    
         }
 
+        #endregion
 
-        private int intPosWrite = 0;//内存流中写指针位移    
-        private int intPosPlay = 0;//内存流中播放指针位移    
-        private int intNotifySize = 5000;//设置通知大小    
+        #region 公共方法
+
+        public IntPtr Intptr
+        {
+            set
+            {
+                intptr = value;
+            }
+        }
+
+        public int NotifySize
+        {
+            set
+            {
+                iNotifySize = value;
+            }
+
+        }
+
+        public int NotifyNum
+        {
+            set
+            {
+                iNotifyNum = value;
+            }
+        }
+
+        public Socket LocalSocket
+        {
+            set
+            {
+                Client = value;
+            }
+        }
+
+        public EndPoint RemoteEndPoint
+        {
+            set
+            {
+                epServer = value;
+            }
+        }
+
+       
+
+        /// <summary>    
+        /// 初始化相关操作    
+        /// </summary>    
+        public void InitVoice()
+        {//初始化声音相关设置：（1）捕捉缓冲区（2）播放缓冲区    
+            if (!CreateCaputerDevice())
+            {
+                throw new Exception();
+            }//建立设备对象    
+            CreateCaptureBuffer();//建立缓冲区对象    
+            CreateNotification();//设置通知及事件    
+            //======（2）==============    
+            if (!CreatePlayDevice())
+            {
+                throw new Exception();
+            }
+            CreateSecondaryBuffer();
+        }
+
+        /// <summary>    
+        /// 启动声音采集    
+        /// </summary>    
+        public void StartVoiceCapture()
+        {
+            capturebuffer.Start(true);//true表示设置缓冲区为循环方式，开始捕捉    
+        }
 
         /// <summary>    
         /// 从字节数组中获取音频数据，并进行播放    
@@ -296,23 +322,7 @@ namespace DirectsoundTest
             }
         }
 
-        /// <summary>    
-        /// 设置音频格式，如采样率等    
-        /// </summary>    
-        /// <returns>设置完成后的格式</returns>    
-        private WaveFormat SetWaveFormat()
-        {
-            WaveFormat format = new WaveFormat();
-            format.FormatTag = WaveFormatTag.Pcm;//设置音频类型    
-            format.SamplesPerSecond = 11025;//采样率（单位：赫兹）典型值：11025、22050、44100Hz    
-            format.BitsPerSample = 16;//采样位数    
-            format.Channels = 1;//声道    
-            format.BlockAlign = (short)(format.Channels * (format.BitsPerSample / 8));//单位采样点的字节数    
-            format.AverageBytesPerSecond = format.BlockAlign * format.SamplesPerSecond;
-
-            return format;
-            //按照以上采样规格，可知采样1秒钟的字节数为22050*2=44100B 约为 43K    
-        }
+        
 
         /// <summary>    
         /// 停止语音采集    
@@ -329,5 +339,7 @@ namespace DirectsoundTest
                 notifyThread.Abort();
             }
         }
+
+        #endregion
     }
 }
