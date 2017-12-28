@@ -79,7 +79,7 @@
             this.lblMsg.Name = "lblMsg";
             this.lblMsg.Size = new System.Drawing.Size(107, 12);
             this.lblMsg.TabIndex = 4;
-            this.lblMsg.Text = "服务端搜到的消息:";
+            this.lblMsg.Text = "服务端收到的消息:";
             // 
             // listViewData
             // 
@@ -120,14 +120,14 @@
             // toolStripMenuItemServer
             // 
             this.toolStripMenuItemServer.Name = "toolStripMenuItemServer";
-            this.toolStripMenuItemServer.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemServer.Size = new System.Drawing.Size(112, 22);
             this.toolStripMenuItemServer.Text = "服务端";
             this.toolStripMenuItemServer.Click += new System.EventHandler(this.toolStripMenuItemServer_Click);
             // 
             // toolStripMenuItemClient
             // 
             this.toolStripMenuItemClient.Name = "toolStripMenuItemClient";
-            this.toolStripMenuItemClient.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemClient.Size = new System.Drawing.Size(112, 22);
             this.toolStripMenuItemClient.Text = "客户端";
             this.toolStripMenuItemClient.Click += new System.EventHandler(this.toolStripMenuItemClient_Click);
             // 
