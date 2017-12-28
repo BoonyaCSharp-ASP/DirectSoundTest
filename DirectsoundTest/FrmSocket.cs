@@ -62,8 +62,13 @@ namespace DirectsoundTest
             byte[] buffer = Encoding.UTF8.GetBytes(this.textBox.Text.ToString());
             string data = Encoding.UTF8.GetString(buffer);
             Thread thread = new Thread(() => {
-                SocketClient.StartClient(data);
-                SetListViewData(data);//委托设置控件的值
+                try {
+                    SocketClient.StartClient(data);
+                    SetListViewData(data);//委托设置控件的值
+                }
+                catch (Exception ex) {
+                    MessageBox.Show(ex.Message);
+                }
             });
             thread.IsBackground = true;
             thread.Start();

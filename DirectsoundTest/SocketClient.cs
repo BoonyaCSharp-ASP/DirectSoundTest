@@ -59,20 +59,24 @@ namespace DirectsoundTest
                 catch (ArgumentNullException ane)
                 {
                     Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
+                    throw ane;
                 }
                 catch (SocketException se)
                 {
                     Console.WriteLine("SocketException : {0}", se.ToString());
+                    throw se;
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine("Unexpected exception : {0}", e.ToString());
+                    throw e;
                 }
 
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
+                throw e;
             }
         }
 
