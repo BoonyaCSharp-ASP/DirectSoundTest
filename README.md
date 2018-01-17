@@ -1,3 +1,5 @@
+# DirectX Version
+DirectX 11 Environment.
 # DirectSoundTest
 
 DirectSoundTest is a project to test Microsoft.DirectX.dll and t Microsoft.DirectX.DirectSound.dll
